@@ -26,18 +26,32 @@ Communication Expectations (How and often will we communicate? How do we keep li
 * Verbose github messages - prioritize github over slack for code questions.
 
 Abilities Expectations (Technical strengths and areas for desired improvement):
+* Improve familiarity with JSON
+* HTTP stuff (get more REST)
+* We feel comfortable working alone, and would like to get better at paired programming.
 
 Workload Expectations (What features do we each want to work on?):
+* Ellen - Person A
+* Megan - Person B
 
 Workflow Expectations (Git workflow/Tools/Code Review/Reviewing Pull Requests):
 * Review all functionality that each team member has completed.
+* Rebase
+* Do not merge your own PRs
+
 
 Expectations for giving and receiving feedback:
-
-Agenda to discuss project launch:
+* Specific Actionable and Kind
+* Don't sit on anything (address issues as they arise)
 
 Ideas:
+* First step, get railsy stuff done (including learning about rake commands).
+* Then do all record endpoints.
+* Then all Relationship and BI for each resource.
+
 
 Tools:
+* Git and github
+* Additional as needed
 
 Additional Notes:
