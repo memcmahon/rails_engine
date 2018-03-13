@@ -7,7 +7,7 @@ class Merchant < ApplicationRecord
   scope :find_by_name, lambda { |name, value| where("lower(#{name}) = ?", value.downcase.gsub("_", " ")).first }
   scope :find_all_by_name, lambda { |name, value| where("lower(#{name}) = ?", value.downcase.gsub("_", " ")) }
 
-  def self.random_merchant
+  def self.random_record
     all.sample(1)[0]
   end
 end
