@@ -2,7 +2,7 @@ class Api::V1::Invoices::SearchController < ApplicationController
 
   def show
     if invoice_params
-      render json: Invoice.find_by(invoice_find_by)
+      render json: Invoice.find_by_attribute(invoice_find_by)
     else
       head 404, "content_type" => 'text/plain'
     end
@@ -10,7 +10,7 @@ class Api::V1::Invoices::SearchController < ApplicationController
 
   def index
     if invoice_params
-      render json: Invoice.where(invoice_find_by)
+      render json: Invoice.find_all_by_attribute(invoice_find_by)
     else
       head 404, "content_type" => 'text/plain'
     end
