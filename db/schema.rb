@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180312234317) do
+ActiveRecord::Schema.define(version: 20180313194751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "citext"
 
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
@@ -62,7 +63,7 @@ ActiveRecord::Schema.define(version: 20180312234317) do
   create_table "transactions", force: :cascade do |t|
     t.bigint "invoice_id"
     t.bigint "credit_card_number"
-    t.string "result"
+    t.citext "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
