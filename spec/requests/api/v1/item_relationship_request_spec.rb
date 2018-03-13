@@ -10,10 +10,19 @@ describe 'Items Relationship API' do
 
     expect(response).to be_success
 
-    binding.pry
-
     invoice_items = JSON.parse(response.body)["invoice_items"]
     expect(invoice_items).to be_instance_of(Array)
     expect(invoice_items.count).to eq(3)
+  end
+
+  it 'sends the item merchant' do
+    item = create(:item)
+
+    get "api/v1/items/#{item.id}/merchant"
+
+    expect(response).to be_success
+    
+    merchant = JSON.parse(response.body)["merchant"]
+    expect(merchant.id).to eq(item.merchant.id)
   end
 end
