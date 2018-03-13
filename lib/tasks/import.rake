@@ -2,7 +2,7 @@ require 'csv'
 
 
 task :import => [:environment] do
-  
+
   Transaction.destroy_all
   InvoiceItem.destroy_all
   Item.destroy_all

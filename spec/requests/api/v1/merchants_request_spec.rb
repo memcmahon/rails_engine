@@ -58,9 +58,10 @@ describe 'Merchants API' do
   end
 
   it 'finds one merchant by created_at date' do
-    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+    created_at = "2017-03-12 14:53:59 UTC"
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3, created_at: created_at)
 
-    get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
+    get "/api/v1/merchants/find?created_at=#{created_at}"
 
     expect(response).to be_success
 
@@ -69,9 +70,10 @@ describe 'Merchants API' do
   end
 
   it 'finds one merchant by updated_at date' do
-    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+    updated_at = "2017-03-12 14:53:59 UTC"
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3, updated_at: updated_at)
 
-    get "/api/v1/merchants/find?updated_at=#{merchant_1.updated_at}"
+    get "/api/v1/merchants/find?updated_at=#{updated_at}"
 
     expect(response).to be_success
 
@@ -104,5 +106,31 @@ describe 'Merchants API' do
     merchants = JSON.parse(response.body)
     expect(merchants.count).to eq(2)
     expect(merchants).to be_instance_of(Array)
+  end
+
+  it 'finds all merchants by created_at date' do
+    created_at = "2017-03-12 14:53:59 UTC"
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3, created_at: created_at)
+    merchant_4 = create(:merchant, created_at: Date.yesterday)
+
+    get "/api/v1/merchants/find_all?created_at=#{created_at}"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+    expect(merchants.count).to eq(3)
+  end
+
+  it 'finds all merchants by updated_at date' do
+    updated_at = "2017-03-12 14:53:59 UTC"
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3, updated_at: updated_at)
+    merchant_4 = create(:merchant, updated_at: Date.yesterday)
+
+    get "/api/v1/merchants/find_all?updated_at=#{updated_at}"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+    expect(merchants.count).to eq(3)
   end
 end

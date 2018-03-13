@@ -4,6 +4,10 @@ class Api::V1::Merchants::SearchController < ApplicationController
       render json: Merchant.where(id: params[:id])
     elsif params[:name]
       render json: Merchant.find_all_by_name('name', params[:name])
+    elsif params[:created_at]
+      render json: Merchant.where(merchant_params)
+    elsif params[:updated_at]
+      render json: Merchant.where(merchant_params)
     end
   end
 
@@ -13,9 +17,14 @@ class Api::V1::Merchants::SearchController < ApplicationController
     elsif params[:name]
       render json: Merchant.find_by_name('name', params[:name])
     elsif params[:created_at]
-      render json: Merchant.find_by_created_at('created_at', Time.parse(params[:created_at]).in_time_zone('UTC')).first
+      render json: Merchant.find_by(merchant_params)
     elsif params[:updated_at]
-      render json: Merchant.find_by_updated_at('updated_at', Time.parse(params[:updated_at]).in_time_zone('UTC')).first
+      render json: Merchant.find_by(merchant_params)
     end
   end
+
+  private
+    def merchant_params
+      params.permit(:created_at, :updated_at)
+    end
 end
