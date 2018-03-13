@@ -56,4 +56,26 @@ describe 'Merchants API' do
     merchant = JSON.parse(response.body)
     expect(merchant["id"]).to eq(merchant_2.id)
   end
+
+  it 'finds one merchant by created_at date' do
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
+
+    expect(response).to be_success
+
+    merchant = JSON.parse(response.body)
+    expect(merchant["id"]).to eq(merchant_1.id)
+  end
+
+  it 'finds one merchant by updated_at date' do
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/find?updated_at=#{merchant_1.updated_at}"
+
+    expect(response).to be_success
+
+    merchant = JSON.parse(response.body)
+    expect(merchant["id"]).to eq(merchant_1.id)
+  end
 end
