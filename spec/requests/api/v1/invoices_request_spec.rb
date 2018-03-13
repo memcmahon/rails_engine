@@ -162,4 +162,10 @@ describe "Invoices API" do
 
     expect(response).to_not be_success
   end
+
+  it "sends random merchant" do
+    get "/api/v1/invoices/random.json"
+
+    expect(response).to be_success
+  end
 end
