@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :merchant do
-    name("Jane Doe")
+    sequence :name do |n|
+      "Jane Doe #{n}"
+    end
   end
 end
