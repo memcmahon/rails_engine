@@ -18,11 +18,11 @@ describe 'Items Relationship API' do
   it 'sends the item merchant' do
     item = create(:item)
 
-    get "api/v1/items/#{item.id}/merchant"
+    get "/api/v1/items/#{item.id}/merchant"
 
     expect(response).to be_success
-    
+
     merchant = JSON.parse(response.body)["merchant"]
-    expect(merchant.id).to eq(item.merchant.id)
+    expect(merchant["id"]).to eq(item.merchant.id)
   end
 end

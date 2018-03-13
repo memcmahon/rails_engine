@@ -38,6 +38,7 @@ Rails.application.routes.draw do
         get "/find_all" => "search#index"
         get "/random" => "random#show"
         get "/:id/invoice_items", to: "item_invoice_items#index"
+        get "/:id/merchant", to: "item_merchant#show"
       end
       get '/items', to: "items#index"
       get '/items/:id', to: "items#show"
