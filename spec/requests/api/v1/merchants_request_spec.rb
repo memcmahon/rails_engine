@@ -38,7 +38,7 @@ describe 'Merchants API' do
   it 'finds one merchant by name parameter' do
     merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
 
-    get "/api/v1/merchants/find?name=#{merchant_2.name.gsub(" ", "_")}"
+    get "/api/v1/merchants/find?name=#{merchant_2.name}"
 
     expect(response).to be_success
 
@@ -49,7 +49,7 @@ describe 'Merchants API' do
   it 'finds one merchant by case insensitive name parameter' do
     merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
 
-    get "/api/v1/merchants/find?name=#{merchant_2.name.gsub(" ", "_").upcase}"
+    get "/api/v1/merchants/find?name=#{merchant_2.name.upcase}"
 
     expect(response).to be_success
 
@@ -99,7 +99,7 @@ describe 'Merchants API' do
     merchant_2 = create(:merchant, name: "John Doe")
     merchant_3 = create(:merchant, name: "Jane Doe")
 
-    get "/api/v1/merchants/find_all?name=Jane_DOE"
+    get "/api/v1/merchants/find_all?name=#{merchant_1.name}"
 
     expect(response).to be_success
 
