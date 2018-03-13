@@ -83,8 +83,8 @@ describe "Invoices API" do
     expect(item["id"]).to eq(invoice.id)
   end
 
-  it "renders 404 if key does not exist", :type => :feature do
-    visit "/api/v1/invoices/find?movie=loveactually"
+  it "renders 404 if key does not exist" do
+    get "/api/v1/invoices/find?movie=loveactually"
 
     expect(response).to_not be_success
   end
@@ -155,5 +155,11 @@ describe "Invoices API" do
 
     expect(response).to be_success
     expect(items.count).to eq(2)
+  end
+
+  it "renders 404 if key does not exist" do
+    get "/api/v1/invoices/find_all?movie=loveactually"
+
+    expect(response).to_not be_success
   end
 end
