@@ -4,8 +4,8 @@ class Merchant < ApplicationRecord
   has_many :invoices
   has_many :items
 
-  scope :find_by_name, lambda { |name, value| where("lower(#{name}) = ?", value.downcase.gsub("_", " ")).first }
-  scope :find_all_by_name, lambda { |name, value| where("lower(#{name}) = ?", value.downcase.gsub("_", " ")) }
+  scope :find_all_by_attribute, ->(attribute) { where(attribute) }
+  scope :find_by_attribute, ->(attribute) { find_by(attribute) }
 
   def self.random_record
     all.sample(1)[0]
