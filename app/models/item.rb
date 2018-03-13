@@ -6,4 +6,9 @@ class Item < ApplicationRecord
   has_many :invoices, through: :invoice_items
 
   scope :find_by_attribute, ->(attribute) { find_by(attribute) }
+  scope :find_all_by_attribute, ->(attribute) { where(attribute) }
+
+  def self.random
+    order("RANDOM()").first
+  end
 end
