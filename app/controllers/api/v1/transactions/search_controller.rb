@@ -1,4 +1,12 @@
 class Api::V1::Transactions::SearchController < ApplicationController
+  def index
+    if transaction_params
+      render json: Transaction.where(transaction_params)
+    else
+      head 404, "content-type" => "text/plain"
+    end
+  end
+
   def show
     if transaction_params
       render json: Transaction.find_by(transaction_params)
