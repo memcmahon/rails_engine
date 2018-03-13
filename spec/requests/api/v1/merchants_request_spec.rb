@@ -38,7 +38,18 @@ describe 'Merchants API' do
   it 'finds one merchant by name parameter' do
     merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
 
-    get "/api/v1/merchants/find?name=Jane_Doe_2"
+    get "/api/v1/merchants/find?name=#{merchant_2.name.gsub(" ", "_")}"
+
+    expect(response).to be_success
+
+    merchant = JSON.parse(response.body)
+    expect(merchant["id"]).to eq(merchant_2.id)
+  end
+
+  it 'finds one merchant by case insensitive name parameter' do
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+
+    get "/api/v1/merchants/find?name=#{merchant_2.name.gsub(" ", "_").upcase}"
 
     expect(response).to be_success
 
