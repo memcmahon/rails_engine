@@ -63,19 +63,30 @@ describe "Invoices API" do
 
   it "sends one invoice based on created_at" do
     date = "2017-03-12 14:53:59 UTC"
-    @invoice_7 = create(:invoice, created_at: date)
+    invoice = create(:invoice, created_at: date)
     get "/api/v1/invoices/find?created_at=#{date}"
 
     item = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(item["id"]).to eq(@invoice_7.id)
+    expect(item["id"]).to eq(invoice.id)
+  end
+
+  it "sends one invoice based on updated_at" do
+    date = "2017-03-12 14:53:59 UTC"
+    invoice = create(:invoice, updated_at: date)
+    get "/api/v1/invoices/find?updated_at=#{date}"
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(item["id"]).to eq(invoice.id)
   end
 
   it "renders 404 if key does not exist", :type => :feature do
     visit "/api/v1/invoices/find?movie=loveactually"
 
-    expect(page).to have_content("The page you were looking for doesn't exist")
+    expect(response).to_not be_success
   end
 
   it "sends all invoices based on id" do
@@ -89,10 +100,10 @@ describe "Invoices API" do
 
   it "sends all invoices based on customer id" do
     customer = create(:customer)
-    @invoice_4 = create(:invoice, customer_id: customer.id)
-    @invoice_5 = create(:invoice, customer_id: customer.id)
-    @invoice_6 = create(:invoice, customer_id: customer.id)
-    get "/api/v1/invoices/find_all?customer_id=#{@invoice_4.customer_id}"
+    invoice_4 = create(:invoice, customer_id: customer.id)
+    invoice_5 = create(:invoice, customer_id: customer.id)
+    invoice_6 = create(:invoice, customer_id: customer.id)
+    get "/api/v1/invoices/find_all?customer_id=#{invoice_4.customer_id}"
 
     items = JSON.parse(response.body)
 
@@ -102,10 +113,10 @@ describe "Invoices API" do
 
   it "sends all invoices based on merchant id" do
     merchant = create(:merchant)
-    @invoice_4 = create(:invoice, merchant_id: merchant.id)
-    @invoice_5 = create(:invoice, merchant_id: merchant.id)
-    @invoice_6 = create(:invoice, merchant_id: merchant.id)
-    get "/api/v1/invoices/find_all?merchant_id=#{@invoice_4.merchant_id}"
+    invoice_4 = create(:invoice, merchant_id: merchant.id)
+    invoice_5 = create(:invoice, merchant_id: merchant.id)
+    invoice_6 = create(:invoice, merchant_id: merchant.id)
+    get "/api/v1/invoices/find_all?merchant_id=#{invoice_4.merchant_id}"
 
     items = JSON.parse(response.body)
 
@@ -115,6 +126,30 @@ describe "Invoices API" do
 
   it "sends all invoices based on status" do
     get "/api/v1/invoices/find_all?status=shipped"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(2)
+  end
+
+  it "sends all invoices based on created_at" do
+    date = "2018-03-12 14:53:59 UTC"
+    invoice_1 = create(:invoice, created_at: date)
+    invoice_2 = create(:invoice, created_at: date)
+    get "/api/v1/invoices/find_all?created_at=#{date}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(2)
+  end
+
+  it "sends all invoices based on updated_at" do
+    date = "2018-03-12 14:53:59 UTC"
+    invoice_1 = create(:invoice, updated_at: date)
+    invoice_2 = create(:invoice, updated_at: date)
+    get "/api/v1/invoices/find_all?updated_at=#{date}"
 
     items = JSON.parse(response.body)
 

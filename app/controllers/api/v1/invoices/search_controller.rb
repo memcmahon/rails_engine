@@ -4,7 +4,7 @@ class Api::V1::Invoices::SearchController < ApplicationController
     if invoice_params
       render json: Invoice.find_by(invoice_find_by)
     else
-      render file: 'public/404.html'
+      head 404, "content_type" => 'text/plain'
     end
   end
 
@@ -12,7 +12,7 @@ class Api::V1::Invoices::SearchController < ApplicationController
     if invoice_params
       render json: Invoice.where(invoice_find_by)
     else
-      render file: 'public/404.html'
+      head 404, "content_type" => 'text/plain'
     end
   end
 
