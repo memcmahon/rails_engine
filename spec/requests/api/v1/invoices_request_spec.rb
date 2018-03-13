@@ -72,7 +72,7 @@ describe "Invoices API" do
 
   it "renders 404 if key does not exist", :type => :feature do
     visit "/api/v1/invoices/find?movie=loveactually"
-
+    
     expect(page).to have_content("The page you were looking for doesn't exist")
   end
 

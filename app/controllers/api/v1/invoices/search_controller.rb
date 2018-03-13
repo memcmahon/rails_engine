@@ -1,38 +1,28 @@
 class Api::V1::Invoices::SearchController < ApplicationController
 
   def show
-    if params[:id].present?
-      render json: Invoice.find(params[:id])
-    elsif params[:customer_id].present?
-      render json: Invoice.find_by(customer_id: params[:customer_id])
-    elsif params[:merchant_id].present?
-      render json: Invoice.find_by(merchant_id: params[:merchant_id])
-    elsif params[:status].present?
-      render json: Invoice.find_by(status: params[:status])
-    elsif params[:created_at].present?
-      render json: Invoice.find_by(created_at: Time.parse(params[:created_at]))
-    elsif params[:updated_at].present?
-      render json: Invoice.find_by(updated_at: params[:updated_at])
+    if invoice_params
+      render json: Invoice.find_by(invoice_find_by)
     else
       render file: 'public/404.html'
     end
   end
 
   def index
-    if params[:id].present?
-      render json: Invoice.where(id: params[:id])
-    elsif params[:customer_id].present?
-      render json: Invoice.where(customer_id: params[:customer_id])
-    elsif params[:merchant_id].present?
-      render json: Invoice.where(merchant_id: params[:merchant_id])
-    elsif params[:status].present?
-      render json: Invoice.where(status: params[:status])
-    elsif params[:created_at].present?
-      render json: Invoice.where(created_at: Time.parse(params[:created_at]))
-    elsif params[:updated_at].present?
-      render json: Invoice.where(updated_at: params[:updated_at])
+    if invoice_params
+      render json: Invoice.where(invoice_find_by)
     else
       render file: 'public/404.html'
     end
+  end
+
+  private
+
+  def invoice_params
+    params[:id] || params[:customer_id] || params[:merchant_id] || params[:status] || params[:created_at] || params[:updated_at]
+  end
+
+  def invoice_find_by
+    params.permit(:id, :customer_id, :merchant_id, :status, :created_at, :updated_at).to_hash
   end
 end
