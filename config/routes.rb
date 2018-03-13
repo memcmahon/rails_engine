@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       namespace :customers do
         get '/find', to: "search#show"
+        get '/find_all', to: "search#index"
       end
       get '/customers', to: "customers#index"
       get '/customers/:id', to: "customers#show"

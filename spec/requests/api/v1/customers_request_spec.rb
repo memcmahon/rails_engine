@@ -209,4 +209,18 @@ describe 'Customers API' do
     expect(customers).to be_instance_of(Array)
     expect(customers.count).to eq(3)
   end
+
+  it 'returns 404 error if find params are invalid' do
+    get "/api/v1/customers/find?duck=goose"
+
+    expect(response).to_not be_success
+    expect(response.status).to eq(404)
+  end
+
+  it 'returns 404 error if find all params are invalid' do
+    get "/api/v1/customers/find_all?duck=goose"
+
+    expect(response).to_not be_success
+    expect(response.status).to eq(404)
+  end
 end
