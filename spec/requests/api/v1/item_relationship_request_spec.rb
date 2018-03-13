@@ -8,9 +8,12 @@ describe 'Items Relationship API' do
 
     get "/api/v1/items/#{item.id}/invoice_items"
 
-    expect(result).to be_success
+    expect(response).to be_success
 
-    invoice_items = JSON.parse(response.body)
+    binding.pry
+
+    invoice_items = JSON.parse(response.body)["invoice_items"]
+    expect(invoice_items).to be_instance_of(Array)
     expect(invoice_items.count).to eq(3)
   end
 end
