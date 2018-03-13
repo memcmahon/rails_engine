@@ -1,6 +1,11 @@
 class Api::V1::Merchants::SearchController < ApplicationController
   def index
-    # binding.pry
+    if params[:id]
+      render json: Merchant.where(id: params[:id])
+    end
+  end
+
+  def show
     if params[:id]
       render json: Merchant.find(params[:id])
     elsif params[:name]

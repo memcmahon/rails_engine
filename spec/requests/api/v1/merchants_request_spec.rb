@@ -78,4 +78,17 @@ describe 'Merchants API' do
     merchant = JSON.parse(response.body)
     expect(merchant["id"]).to eq(merchant_1.id)
   end
+
+  it 'finds all merchants by id' do
+    merchant_1 = create(:merchant, name: "Jane Doe")
+    merchant_2 = create(:merchant, name: "John Doe")
+    merchant_3 = create(:merchant, name: "Jane Doe")
+
+    get "/api/v1/merchants/find_all?id=#{merchant_1.id}"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+    expect(merchants).to be_instance_of(Array)
+  end
 end
