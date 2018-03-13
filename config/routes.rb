@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get '/merchants/:id', to:"merchants#show"
 
       get '/transactions', to: "transactions#index"
+      get '/transactions/:id', to: "transactions#show"
       namespace :transactions do
       end
     end
