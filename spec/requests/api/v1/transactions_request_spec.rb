@@ -68,6 +68,19 @@ describe 'Transactions API' do
     transaction = JSON.parse(response.body)
     expect(transaction["id"]).to eq(transaction_4.id)
   end
+
+  it 'finds one transaction by case insensitive result parameter' do
+    transaction_1, transaction_2, transaction_3 = create_list(:transaction, 3, result: 'failed')
+    transaction_4 = create(:transaction)
+
+    get "/api/v1/transactions/find?result=SUCcESs"
+
+    expect(response).to be_success
+
+    transaction = JSON.parse(response.body)
+    expect(transaction["id"]).to eq(transaction_4.id)
+  end
+
   it 'finds one transaction by created_at parameter' do
     created_at = "2017-03-14 12:12:12 UTC"
     transaction_1, transaction_2, transaction_3 = create_list(:transaction, 3)
@@ -80,6 +93,7 @@ describe 'Transactions API' do
     transaction = JSON.parse(response.body)
     expect(transaction["id"]).to eq(transaction_4.id)
   end
+
   it 'finds one transaction by updated_at parameter' do
     updated_at = "2017-03-14 12:12:12 UTC"
     transaction_1, transaction_2, transaction_3 = create_list(:transaction, 3)
