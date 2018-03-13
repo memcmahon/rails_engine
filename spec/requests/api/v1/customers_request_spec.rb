@@ -223,4 +223,19 @@ describe 'Customers API' do
     expect(response).to_not be_success
     expect(response.status).to eq(404)
   end
+
+  it 'returns random customer' do
+    customer_1, customer_2, customer_3 = create_list(:customer, 3)
+
+    get "/api/v1/customers/random"
+
+    expect(response).to be_success
+
+    customer = JSON.parse(response.body)
+    expect(customer[:id])
+    expect(customer[:first_name])
+    expect(customer[:last_name])
+    expect(customer[:created_at])
+    expect(customer[:updated_at])
+  end
 end
