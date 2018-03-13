@@ -24,25 +24,22 @@ Rails.application.routes.draw do
       end
       get '/customers', to: "customers#index"
       get '/customers/:id', to: "customers#show"
-    end
-  end
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
-  namespace :api do
-    namespace :v1 do
       namespace :invoices do
         get "/find" => "search#show"
         get "/find_all" => "search#index"
         get "/random" => "random#show"
       end
+      get '/invoices', to: "invoices#index"
+      get '/invoices/:id', to: "invoices#show"
+
       namespace :items do
         get "/find" => "search#show"
         get "/find_all" => "search#index"
         get "/random" => "random#show"
       end
-      resources :invoices, only: [:index, :show]
-      resources :items, only: [:index, :show]
+      get '/items', to: "items#index"
+      get '/items/:id', to: "items#show"
     end
   end
 end
