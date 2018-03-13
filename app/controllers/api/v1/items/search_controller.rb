@@ -8,6 +8,14 @@ class Api::V1::Items::SearchController < ApplicationController
     end
   end
 
+  def index
+    if item_params.present?
+      render json: Item.find_all_by_attribute(item_params)
+    else
+      head 404, "content_type" => 'text/plain'
+    end
+  end
+
   private
 
   def item_params

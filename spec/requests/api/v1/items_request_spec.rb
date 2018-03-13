@@ -85,4 +85,91 @@ describe "Items API" do
     expect(response).to be_success
     expect(item["id"]).to eq(item_1.id)
   end
+
+  it "renders 404 if key does not exist" do
+    get "/api/v1/items/find?boardgame=monopoly"
+
+    expect(response).to_not be_success
+  end
+
+  it "sends all items based on id" do
+    get "/api/v1/items/find_all?id=#{@item_1.id}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items[0]["id"]).to eq(@item_1.id)
+  end
+
+  it "sends all items based on name" do
+    get "/api/v1/items/find_all?name=Lego"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(3)
+  end
+
+  it "sends all items based on description" do
+    get "/api/v1/items/find_all?description=#{@item_1.description}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(3)
+  end
+
+  it "sends all items based on unit price" do
+    get "/api/v1/items/find_all?unit_price=10000"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(3)
+  end
+
+  it "sends all items based on merchant id" do
+    get "/api/v1/items/find_all?merchant_id=#{@item_1.merchant_id}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(1)
+  end
+
+  it "sends all items based on created_at" do
+    date = "2018-03-12 14:53:59 UTC"
+    item_1 = create(:item, created_at: date)
+    item_2 = create(:item, created_at: date)
+    get "/api/v1/items/find_all?created_at=#{date}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(2)
+  end
+
+  it "sends all items based on updated_at" do
+    date = "2018-03-12 14:53:59 UTC"
+    item_1 = create(:item, updated_at: date)
+    item_2 = create(:item, updated_at: date)
+    get "/api/v1/items/find_all?updated_at=#{date}"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(2)
+  end
+
+  it "renders 404 if key does not exist" do
+    get "/api/v1/items/find_all?boardgame=monopoly"
+
+    expect(response).to_not be_success
+  end
+
+  it "sends random item" do
+    get "/api/v1/items/random.json"
+
+    expect(response).to be_success
+  end
 end
