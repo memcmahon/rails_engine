@@ -49,7 +49,7 @@ describe 'Customers API' do
   it 'finds one customer by case insensitive first_name parameter' do
     customer_1, customer_2, customer_3 = create_list(:customer, 3)
 
-    get "/api/v1/customers/find?first_name=jAnE"
+    get "/api/v1/customers/find?first_name=#{customer_2.first_name.upcase}"
 
     expect(response).to be_success
 
@@ -96,7 +96,7 @@ describe 'Customers API' do
     customer_1, customer_2, customer_3 = create_list(:customer, 3)
     customer_4 = create(:customer, updated_at: updated_at)
 
-    get "/api/v1/customers/find?id=#{updated_at}"
+    get "/api/v1/customers/find?updated_at=#{updated_at}"
 
     expect(response).to be_success
 
