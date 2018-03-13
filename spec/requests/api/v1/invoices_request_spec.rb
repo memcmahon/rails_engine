@@ -61,18 +61,20 @@ describe "Invoices API" do
     expect(item["status"]).to eq("pending")
   end
 
-  xit "sends one invoice based on created_at" do
-    get "/api/v1/invoices/find?created_at=#{@invoice_1.created_at}"
+  it "sends one invoice based on created_at" do
+    date = "2017-03-12 14:53:59 UTC"
+    @invoice_7 = create(:invoice, created_at: date)
+    get "/api/v1/invoices/find?created_at=#{date}"
 
     item = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(item["created_at"]).to eq(@invoice_1.created_at)
+    expect(item["id"]).to eq(@invoice_7.id)
   end
 
   it "renders 404 if key does not exist", :type => :feature do
     visit "/api/v1/invoices/find?movie=loveactually"
-    
+
     expect(page).to have_content("The page you were looking for doesn't exist")
   end
 
