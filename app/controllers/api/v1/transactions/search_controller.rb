@@ -1,6 +1,6 @@
 class Api::V1::Transactions::SearchController < ApplicationController
   def index
-    if !transaction_params.empty?
+    if transaction_params.present?
       render json: Transaction.where(transaction_params)
     else
       head 404, "content-type" => "text/plain"
@@ -8,7 +8,7 @@ class Api::V1::Transactions::SearchController < ApplicationController
   end
 
   def show
-    if !transaction_params.empty?
+    if transaction_params.present?
       render json: Transaction.find_by(transaction_params)
     else
       head 404, "content-type" => "text/plain"

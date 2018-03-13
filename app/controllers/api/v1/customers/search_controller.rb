@@ -1,6 +1,6 @@
 class Api::V1::Customers::SearchController < ApplicationController
   def index
-    if !customer_params.empty?
+    if customer_params.present?
       render json: Customer.where(customer_params)
     else
       head 404, "content-type" => "text/plain"
@@ -8,7 +8,7 @@ class Api::V1::Customers::SearchController < ApplicationController
   end
 
   def show
-    if !customer_params.empty?
+    if customer_params.present?
       render json: Customer.find_by(customer_params)
     else
       head 404, "content-type" => "text/plain"
