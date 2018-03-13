@@ -16,6 +16,9 @@ Rails.application.routes.draw do
       end
       get '/transactions', to: "transactions#index"
       get '/transactions/:id', to: "transactions#show"
+
+      get '/customers', to: "customers#index"
+      get '/customers/:id', to: "customers#show"
     end
   end
 
