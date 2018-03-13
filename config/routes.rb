@@ -9,10 +9,11 @@ Rails.application.routes.draw do
       get '/merchants', to: "merchants#index"
       get '/merchants/:id', to:"merchants#show"
 
+      namespace :transactions do
+        get '/find', to: "search#show"
+      end
       get '/transactions', to: "transactions#index"
       get '/transactions/:id', to: "transactions#show"
-      namespace :transactions do
-      end
     end
   end
 

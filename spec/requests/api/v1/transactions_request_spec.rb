@@ -23,4 +23,15 @@ describe 'Transactions API' do
     transaction = JSON.parse(response.body)
     expect(transaction["id"]).to eq(id)
   end
+
+  it 'finds one transaction by id parameter' do
+    transaction_1, transaction_2, transaction_3 = create_list(:transaction, 3)
+
+    get "/api/v1/transactions/find?id=#{transaction_2.id}"
+
+    expect(response).to be_success
+
+    transaction = JSON.parse(response.body)
+    expect(transaction["id"]).to eq(transaction_2.id)
+  end
 end
