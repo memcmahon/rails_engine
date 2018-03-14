@@ -21,14 +21,3 @@ class Merchant < ApplicationRecord
     .limit(quantity)
   end
 end
-
-#SQL: SELECT merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue
-      #FROM merchants
-      #JOIN invoices ON invoices.merchant_id = merchants.id
-      #JOIN invoice_items ON invoice_items.invoice_id = invoices.id
-      #JOIN items ON invoice_items.item_id = items.id
-      #JOIN transactions ON transactions.invoice_id = invoices.id
-      #WHERE transaction.result = "success"
-      #GROUP BY merchants.id
-      #ORDER BY revenue
-      #LIMIT #{quantity}
