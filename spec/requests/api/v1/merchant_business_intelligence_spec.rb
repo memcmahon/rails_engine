@@ -61,7 +61,7 @@ describe "Merchant Business Intelligence API" do
     expect(customer["transactions_count"]).to eq(2)
   end
 
-  xit "sends revenue for a single merchant" do
+  it "sends revenue for a single merchant" do
     merchant = create(:merchant)
     invoice_1, invoice_2, invoice_3 = create_list(:invoice, 3, merchant: merchant)
     invoice_4 = create(:invoice)
