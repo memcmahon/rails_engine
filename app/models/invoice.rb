@@ -4,6 +4,7 @@ class Invoice < ApplicationRecord
   belongs_to :merchant
   has_many :invoice_items
   has_many :items, through: :invoice_items
+  has_many :transactions
 
   scope :find_by_attribute, ->(attribute) { find_by(attribute) }
   scope :find_all_by_attribute, ->(attribute) { where(attribute) }
