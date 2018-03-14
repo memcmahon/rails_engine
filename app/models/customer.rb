@@ -9,7 +9,7 @@ class Customer < ApplicationRecord
   def self.favorite_customer(merchant_id)
     select("customers.*, count(transactions.id) AS transactions_count")
     .joins(invoices: :transactions)
-    .where("transactions.result = 'success'")
+    .merge(Transaction.successful)
     .where("invoices.merchant_id = #{merchant_id}")
     .group(:id)
     .order("transactions_count desc")
