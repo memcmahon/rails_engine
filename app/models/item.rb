@@ -11,4 +11,16 @@ class Item < ApplicationRecord
   def self.random
     order("RANDOM()").first
   end
+
+  def best_invoice_id
+    invoice_items.select('invoice_id, SUM(quantity) AS total')
+                 .group('invoice_id')
+                 .order('total DESC')
+                 .first
+                 .invoice_id
+  end
+
+  def best_day
+    invoices.find(best_invoice_id).created_at
+  end
 end
