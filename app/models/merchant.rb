@@ -12,19 +12,19 @@ class Merchant < ApplicationRecord
   end
 
   def self.rank_by_revenue(quantity)
-    select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
+    select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS merchant_revenue")
     .joins(invoices: [:invoice_items, :transactions])
     .where("transactions.result = 'success'")
     .group(:id)
-    .order("revenue desc")
+    .order("merchant_revenue desc")
     .limit(quantity)
   end
 
-  def revenue_by_merchant
-    invoices.select("sum((invoice_items.unit_price / 100) * quantity) AS revenue")
+  def revenue
+    (invoices.select("sum(invoice_items.unit_price * quantity) AS revenue")
     .joins(:invoice_items, :transactions)
     .where(transactions: {result: "success"})
     .group(:merchant_id)[0]
-    .revenue
+    .revenue / 100.0).to_s
   end
 end

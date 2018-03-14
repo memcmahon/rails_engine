@@ -24,7 +24,7 @@ RSpec.describe Merchant, type: :model do
       invoice_item_3 = create(:invoice_item, invoice: invoice_3, unit_price: 300, quantity: 3)
       invoice_item_4 = create(:invoice_item, invoice: invoice_4)
 
-      expect(merchant.revenue_by_merchant).to eq(12)
+      expect(merchant.revenue).to eq("12.0")
     end
   end
 end
