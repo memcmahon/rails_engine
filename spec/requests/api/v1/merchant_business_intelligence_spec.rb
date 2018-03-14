@@ -11,10 +11,10 @@ describe "Merchant Business Intelligence API" do
     @item_4 = create(:item, unit_price: 10000, merchant_id: @merchant_2.id)
     @item_5 = create(:item, unit_price: 20000, merchant_id: @merchant_2.id)
     @item_6 = create(:item, unit_price: 50000, merchant_id: @merchant_3.id)
-    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, created_at: "2012-03-25 09:54:09 UTC")
+    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, created_at: "2012-03-25 01:54:09 UTC")
     @invoice_2 = create(:invoice, merchant_id: @merchant_1.id, created_at: "2012-06-25 09:54:09 UTC")
     @invoice_3 = create(:invoice, merchant_id: @merchant_2.id, created_at: "2012-05-25 09:54:09 UTC")
-    @invoice_4 = create(:invoice, merchant_id: @merchant_3.id, created_at: "2012-03-25 09:54:09 UTC")
+    @invoice_4 = create(:invoice, merchant_id: @merchant_3.id, created_at: "2012-03-25 09:55:09 UTC")
     @invoice_5 = create(:invoice, merchant_id: @merchant_3.id, created_at: "2012-04-25 09:54:09 UTC")
     @invoice_item_1a = create(:invoice_item, invoice_id: @invoice_1.id, item_id: @item_1.id, unit_price: 10000, quantity: 1)
     @invoice_item_1b = create(:invoice_item, invoice_id: @invoice_1.id, item_id: @item_2.id, unit_price: 20000, quantity: 1)
@@ -86,9 +86,9 @@ end
     date = "2012-03-25 09:54:09 UTC"
     get "/api/v1/merchants/revenue?date=#{date}"
 
-    date = JSON.parse(response.body)
+    total_revenue = JSON.parse(response.body)
 
-    expect(date).to eq("2012-03-25 09:54:09 UTC")
+    expect(total_revenue).to eq(800.0)
   end
 
   it "sends revenue for a single merchant by date" do
