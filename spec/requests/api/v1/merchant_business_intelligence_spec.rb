@@ -82,4 +82,27 @@ describe "Merchant Business Intelligence API" do
 
     expect(revenue).to eq("12.0")
   end
+
+  it "sends revenue for a single merchant by date" do
+    created_date = "2012-03-16 12:24:23"
+    merchant = create(:merchant)
+    invoice_1, invoice_2 = create_list(:invoice, 2, merchant: merchant, created_at: created_date)
+    invoice_3 = create(:invoice, merchant: merchant)
+    invoice_4 = create(:invoice)
+    transaction_1 = create(:transaction, invoice: invoice_1)
+    transaction_2 = create(:transaction, invoice: invoice_2, result: "failed")
+    transaction_3 = create(:transaction, invoice: invoice_3)
+    transaction_4 = create(:transaction, invoice: invoice_4)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1, unit_price: 300, quantity: 1)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2, unit_price: 300, quantity: 2)
+    invoice_item_3 = create(:invoice_item, invoice: invoice_3, unit_price: 300, quantity: 3)
+    invoice_item_4 = create(:invoice_item, invoice: invoice_4)
+
+    get "/api/v1/merchants/#{merchant.id}/revenue?date=2012-03-16"
+
+    expect(response).to be_success
+
+    revenue = JSON.parse(response.body)["revenue"]
+    expect(revenue).to eq("9.0")
+  end
 end
