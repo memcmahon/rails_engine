@@ -80,7 +80,7 @@ describe "Merchant Business Intelligence API" do
     revenue = JSON.parse(response.body)["revenue"]
 
     expect(revenue).to eq("12.0")
-end
+  end
 
   it "sends total revenue for date x across all merchants" do
     date = "2012-03-25 09:54:09 UTC"
@@ -112,5 +112,15 @@ end
 
     revenue = JSON.parse(response.body)["revenue"]
     expect(revenue).to eq("3.0")
+  end
+
+  it "sends customers which have pending (unpaid) invoices" do
+    merchant = create(:merchant)
+    customer_1 = create(:customer)
+    get "/api/v1/merchants/#{merchant}/customers_with_pending_invoices"
+
+    customers = JSON.parse(response.body)
+
+    expect(customers.count).to eq()
   end
 end
