@@ -76,7 +76,9 @@ describe "Merchant Business Intelligence API" do
 
     get "/api/v1/merchants/#{merchant.id}/revenue"
 
-    revenue = JSON.parse(response.body)["revenue"]
+    expect(response).to be_success
+
+    revenue = JSON.parse(response.body)["revenue_by_merchant"]
 
     expect(revenue).to eq(12)
   end
