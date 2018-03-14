@@ -13,11 +13,24 @@ class Merchant < ApplicationRecord
 
   def self.rank_by_revenue(quantity)
     select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
-    .joins(invoices: :invoice_items)
-    .joins(invoices: :transactions)
+    .joins(invoices: [:invoice_items, :transactions])
     .where("transactions.result = 'success'")
     .group(:id)
     .order("revenue desc")
     .limit(quantity)
+  end
+
+  def find_customer
+    invoices.select("customer_id, count(transactions.id) AS transactions_count")
+            .joins(:transactions)
+            .where("transactions.result = 'success'")
+            .group(:customer_id)
+            .order("transactions_count desc")
+            .first
+            .customer_id
+  end
+
+  def favorite_customer
+    Customer.find(find_customer)
   end
 end

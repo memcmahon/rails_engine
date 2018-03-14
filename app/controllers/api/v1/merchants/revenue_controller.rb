@@ -1,8 +1,7 @@
 class Api::V1::Merchants::RevenueController < ApplicationController
-  def show
+  def index
     render json: Merchant.rank_by_revenue(revenue_params[:quantity])
   end
-
 
   private
 

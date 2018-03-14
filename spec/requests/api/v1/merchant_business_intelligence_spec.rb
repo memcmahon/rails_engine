@@ -40,4 +40,24 @@ describe "Merchant Business Intelligence API" do
     expect(merchants.first["id"]).to eq(@merchant_1.id)
     expect(merchants.first["revenue"]).to eq(70000)
   end
+
+  it "sends customer who has conducted the most total number of successful transactions" do
+    merchant = create(:merchant)
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    invoice_6 = create(:invoice, merchant_id: merchant.id, customer_id: customer_1.id)
+    invoice_7 = create(:invoice, merchant_id: merchant.id, customer_id: customer_1.id)
+    invoice_8 = create(:invoice, merchant_id: merchant.id, customer_id: customer_2.id)
+    transaction_6 = create(:transaction, invoice_id: invoice_6.id, result: "success")
+    transaction_7 = create(:transaction, invoice_id: invoice_7.id, result: "success")
+    transaction_8 = create(:transaction, invoice_id: invoice_8.id, result: "success")
+    transaction_9 = create(:transaction, invoice_id: invoice_6.id, result: "failed")
+
+    get "/api/v1/merchants/#{merchant.id}/favorite_customer"
+
+    customer = JSON.parse(response.body)
+
+    expect(customer["id"]).to eq(customer_1.id)
+    expect(customer["transactions"]).to eq(2)
+  end
 end
