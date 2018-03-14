@@ -10,4 +10,13 @@ class Merchant < ApplicationRecord
   def self.random_record
     all.sample(1)[0]
   end
+
+  def self.rank_by_revenue(quantity)
+    select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS revenue")
+    .joins(invoices: [:invoice_items, :transactions])
+    .where("transactions.result = 'success'")
+    .group(:id)
+    .order("revenue desc")
+    .limit(quantity)
+  end
 end
