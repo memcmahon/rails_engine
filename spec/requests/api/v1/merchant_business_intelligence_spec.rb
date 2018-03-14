@@ -58,6 +58,6 @@ describe "Merchant Business Intelligence API" do
     customer = JSON.parse(response.body)
 
     expect(customer["id"]).to eq(customer_1.id)
-    expect(customer["transactions"]).to eq(2)
+    expect(customer["transactions_count"]).to eq(2)
   end
 end

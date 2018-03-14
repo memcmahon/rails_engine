@@ -19,18 +19,4 @@ class Merchant < ApplicationRecord
     .order("revenue desc")
     .limit(quantity)
   end
-
-  def find_customer
-    invoices.select("customer_id, count(transactions.id) AS transactions_count")
-            .joins(:transactions)
-            .where("transactions.result = 'success'")
-            .group(:customer_id)
-            .order("transactions_count desc")
-            .first
-            .customer_id
-  end
-
-  def favorite_customer
-    Customer.find(find_customer)
-  end
 end
