@@ -8,11 +8,11 @@ describe 'Items Business Logic APIs' do
     invoice_item_1 = create(:invoice_item, quantity: 3, invoice: invoice_2, item: item)
     invoice_item_2 = create(:invoice_item, quantity: 2, invoice: invoice_1, item: item)
 
-    visit "/api/v1/items/#{item.id}/best_day"
+    get "/api/v1/items/#{item.id}/best_day"
 
     expect(response).to be_success
 
-    best_day = JSON.parse(response.body)
-    expect(best_day).to eq(invoice_2.created_at)
+    best_day = JSON.parse(response.body)["best_day"]
+    expect(best_day.to_json).to eq(invoice_2.created_at.to_json)
   end
 end
