@@ -12,15 +12,12 @@ class Item < ApplicationRecord
     order("RANDOM()").first
   end
 
-  def best_invoice_id
-    invoice_items.select('invoice_id, SUM(quantity) AS total')
-                 .group('invoice_id')
-                 .order('total DESC')
-                 .first
-                 .invoice_id
-  end
-
   def best_day
-    invoices.find(best_invoice_id).created_at
+    invoices.select("invoices.*, SUM(invoice_items.quantity) AS total")
+            .joins(:invoice_items)
+            .group(:id)
+            .order("total DESC")
+            .first
+            .created_at
   end
 end
