@@ -20,7 +20,7 @@ class Merchant < ApplicationRecord
     .limit(quantity)
   end
 
-  def revenue
+  def revenue_by_merchant
     invoices.select("sum((invoice_items.unit_price / 100) * quantity) AS revenue")
     .joins(:invoice_items, :transactions)
     .where(transactions: {result: "success"})
