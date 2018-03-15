@@ -24,5 +24,15 @@ describe Item, type: :model do
 
       expect(item.best_day).to eq(invoice_2.created_at)
     end
+
+    it "should return item with most sales" do
+      item_1, item_2 = create_list(:item, 2)
+      invoice = create(:invoice)
+      transaction = create(:transaction, invoice: invoice)
+      invoice_item_1, invoice_item_2 = create_list(:invoice_item, 2, item: item_1, invoice: invoice)
+      invoice_item_3 = create(:invoice_item, quantity: 12, item: item_2, invoice: invoice)
+
+      expect(Item.ranked_by_sale(1)[0]).to eq(item_2)
+    end
   end
 end

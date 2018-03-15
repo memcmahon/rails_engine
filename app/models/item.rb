@@ -29,4 +29,13 @@ class Item < ApplicationRecord
     .order("item_revenue desc")
     .limit(quantity)
   end
+
+  def self.ranked_by_sale(quantity)
+    select("items.*, sum(invoice_items.quantity) AS total")
+    .joins(invoice_items: [invoice: :transactions])
+    .where(transactions: {result: "success"})
+    .group(:id)
+    .order("total DESC")
+    .limit(quantity)
+  end
 end

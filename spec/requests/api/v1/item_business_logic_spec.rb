@@ -41,4 +41,23 @@ describe 'Items Business Logic APIs' do
     expect(items.first["name"]).to eq("Thing1")
     expect(items.last["name"]).to eq("Thing2")
   end
+
+  it "sends top x items ranked by total items sold" do
+    item_1, item_2 = create_list(:item, 2, name: "Thing")
+    merchant = create(:merchant, name: "Jane Doe")
+    invoice = create(:invoice, merchant: merchant)
+    transaction = create(:transaction, invoice: invoice)
+    invoice_item_1, invoice_item_2 = create_list(:invoice_item, 2, item: item_1, invoice: invoice)
+    invoice_item_3 = create(:invoice_item, quantity: 12, item: item_2, invoice: invoice)
+
+    get "/api/v1/items/most_items?quantity=2"
+
+    expect(response).to be_success
+
+    items = JSON.parse(response.body)
+
+    expect(items.count).to eq(2)
+    expect(items.first["id"]).to eq(item_2.id)
+    expect(items.last["id"]).to eq(item_1.id)
+  end
 end
