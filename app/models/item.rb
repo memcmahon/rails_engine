@@ -31,8 +31,8 @@ class Item < ApplicationRecord
   end
 
   def self.ranked_by_sale(quantity)
-    select("items.id, sum(invoice_items.quantity) AS total")
-    .joins(:invoice_items, invoices: :transactions)
+    select("items.*, sum(invoice_items.quantity) AS total")
+    .joins(invoice_items: [invoice: :transactions])
     .where(transactions: {result: "success"})
     .group(:id)
     .order("total DESC")
