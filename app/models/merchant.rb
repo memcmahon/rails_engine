@@ -12,7 +12,8 @@ class Merchant < ApplicationRecord
   end
 
   def self.rank_by_revenue(quantity)
-    select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS merchant_revenue")
+    unscoped
+    .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS merchant_revenue")
     .joins(invoices: [:invoice_items, :transactions])
     .merge(Transaction.successful)
     .group(:id)
@@ -21,7 +22,7 @@ class Merchant < ApplicationRecord
   end
 
   def revenue(date = {})
-    (invoices.select("sum(invoice_items.unit_price * quantity) AS revenue")
+    (invoices.unscoped.select("sum(invoice_items.unit_price * quantity) AS revenue")
     .joins(:invoice_items, :transactions)
     .where(transactions: {result: "success"})
     .where(date)
@@ -30,7 +31,8 @@ class Merchant < ApplicationRecord
   end
 
   def self.ranked_by_item(limit)
-    select("merchants.*, sum(invoice_items.quantity) AS total")
+    unscoped
+    .select("merchants.*, sum(invoice_items.quantity) AS total")
     .joins(invoices: [:transactions, :invoice_items])
     .where(transactions: {result: "success"})
     .group(:id)
