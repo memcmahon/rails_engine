@@ -38,7 +38,6 @@ describe "Merchant Business Intelligence API" do
 
     expect(merchants.count).to eq(2)
     expect(merchants.first["id"]).to eq(@merchant_1.id)
-    expect(merchants.first["merchant_revenue"]).to eq(70000)
   end
 
   it "sends customer who has conducted the most total number of successful transactions" do
