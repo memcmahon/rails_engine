@@ -48,7 +48,7 @@ describe 'Items Business Logic APIs' do
     invoice = create(:invoice, merchant: merchant)
     transaction = create(:transaction, invoice: invoice)
     invoice_item_1, invoice_item_2 = create_list(:invoice_item, 2, item: item_1, invoice: invoice)
-    invoice_item_3 = create(:invoice_item, quantity: 12, item: item_2, invoice: invoice)
+    invoice_item_3 = create(:invoice_item, quantity: 300, item: item_2, invoice: invoice)
 
     get "/api/v1/items/most_items?quantity=2"
 
