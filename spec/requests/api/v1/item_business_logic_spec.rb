@@ -17,6 +17,28 @@ describe 'Items Business Logic APIs' do
   end
 
   it "sends top x items ranked by total revenue generated" do
-    
+    item_1 = create(:item, name: "ThingBops", unit_price: 10000)
+    item_2 = create(:item, name: "ThingPops", unit_price: 20000)
+    item_3 = create(:item, name: "ThingRings", unit_price: 30000)
+    invoice_1 = create(:invoice)
+    invoice_2 = create(:invoice)
+    invoice_3 = create(:invoice)
+    invoice_item_1 = create(:invoice_item, item_id: item_1.id, invoice_id: invoice_1.id, quantity: 1, unit_price: 10000)
+    invoice_item_2 = create(:invoice_item, item_id: item_2.id, invoice_id: invoice_1.id, quantity: 2, unit_price: 20000)
+    invoice_item_3 = create(:invoice_item, item_id: item_3.id, invoice_id: invoice_2.id, quantity: 1, unit_price: 30000)
+    invoice_item_4 = create(:invoice_item, item_id: item_3.id, invoice_id: invoice_3.id, quantity: 2, unit_price: 30000)
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: 'success')
+    transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: 'failed')
+    transaction_3 = create(:transaction, invoice_id: invoice_2.id, result: 'success')
+    transaction_4 = create(:transaction, invoice_id: invoice_3.id, result: 'failed')
+
+    get "/api/v1/items/most_revenue?quantity=2"
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(items.count).to eq(2)
+    expect(items.first["name"]).to eq("ThingPops")
+    expect(items.last["name"]).to eq("ThingRings")
   end
 end
