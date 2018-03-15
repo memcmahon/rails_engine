@@ -1,6 +1,6 @@
 class Api::V1::CustomersController < ApplicationController
   def index
-    render json: Customer.all
+    render json: Customer.all, each_serializer: SimpleCustomerSerializer
   end
 
   def show
