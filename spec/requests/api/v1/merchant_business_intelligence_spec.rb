@@ -11,11 +11,11 @@ describe "Merchant Business Intelligence API" do
     @item_4 = create(:item, unit_price: 10000, merchant_id: @merchant_2.id)
     @item_5 = create(:item, unit_price: 20000, merchant_id: @merchant_2.id)
     @item_6 = create(:item, unit_price: 50000, merchant_id: @merchant_3.id)
-    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id)
-    @invoice_2 = create(:invoice, merchant_id: @merchant_1.id)
-    @invoice_3 = create(:invoice, merchant_id: @merchant_2.id)
-    @invoice_4 = create(:invoice, merchant_id: @merchant_3.id)
-    @invoice_5 = create(:invoice, merchant_id: @merchant_3.id)
+    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, created_at: "2012-03-25 01:54:09 UTC")
+    @invoice_2 = create(:invoice, merchant_id: @merchant_1.id, created_at: "2012-06-25 09:54:09 UTC")
+    @invoice_3 = create(:invoice, merchant_id: @merchant_2.id, created_at: "2012-05-25 09:54:09 UTC")
+    @invoice_4 = create(:invoice, merchant_id: @merchant_3.id, created_at: "2012-03-25 09:55:09 UTC")
+    @invoice_5 = create(:invoice, merchant_id: @merchant_3.id, created_at: "2012-04-25 09:54:09 UTC")
     @invoice_item_1a = create(:invoice_item, invoice_id: @invoice_1.id, item_id: @item_1.id, unit_price: 10000, quantity: 1)
     @invoice_item_1b = create(:invoice_item, invoice_id: @invoice_1.id, item_id: @item_2.id, unit_price: 20000, quantity: 1)
     @invoice_item_2a = create(:invoice_item, invoice_id: @invoice_2.id, item_id: @item_1.id, unit_price: 10000, quantity: 2)
@@ -82,6 +82,15 @@ describe "Merchant Business Intelligence API" do
     expect(revenue).to eq("12.0")
   end
 
+  it "sends total revenue for date x across all merchants" do
+    date = "2012-03-25 09:54:09 UTC"
+    get "/api/v1/merchants/revenue?date=#{date}"
+
+    total_revenue = JSON.parse(response.body)
+
+    expect(total_revenue["total_revenue"]).to eq("800.0")
+  end
+
   it "sends revenue for a single merchant by date" do
     created_date = "2012-03-16 12:24:23"
     merchant = create(:merchant)
@@ -103,5 +112,26 @@ describe "Merchant Business Intelligence API" do
 
     revenue = JSON.parse(response.body)["revenue"]
     expect(revenue).to eq("3.0")
+  end
+
+  it "sends customers which have pending (unpaid) invoices" do
+    merchant = create(:merchant)
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    customer_3 = create(:customer)
+    invoice_1 = create(:invoice, merchant_id: merchant.id, customer_id: customer_1.id)
+    invoice_2 = create(:invoice, merchant_id: merchant.id, customer_id: customer_2.id)
+    invoice_3 = create(:invoice, merchant_id: merchant.id, customer_id: customer_3.id)
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "failed")
+    transaction_2 = create(:transaction, invoice_id: invoice_1.id, result: "success")
+    transaction_3 = create(:transaction, invoice_id: invoice_2.id, result: "failed")
+    transaction_4 = create(:transaction, invoice_id: invoice_3.id, result: "failed")
+    transaction_5 = create(:transaction, invoice_id: invoice_3.id, result: "failed")
+
+    get "/api/v1/merchants/#{merchant.id}/customers_with_pending_invoices"
+
+    customers = JSON.parse(response.body)
+
+    expect(customers.count).to eq(2)
   end
 end
