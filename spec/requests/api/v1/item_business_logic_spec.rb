@@ -15,4 +15,8 @@ describe 'Items Business Logic APIs' do
     best_day = JSON.parse(response.body)["best_day"]
     expect(best_day.to_json).to eq(invoice_2.created_at.to_json)
   end
+
+  it "sends top x items ranked by total revenue generated" do
+    
+  end
 end
