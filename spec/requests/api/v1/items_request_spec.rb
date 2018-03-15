@@ -61,7 +61,7 @@ describe "Items API" do
     item = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(item["unit_price"]).to eq(1000)
+    expect(item.first["unit_price"]).to eq("100.0")
   end
 
   it "sends one item based on created_at" do
@@ -120,7 +120,7 @@ describe "Items API" do
   end
 
   it "sends all items based on unit price" do
-    get "/api/v1/items/find_all?unit_price=10000"
+    get "/api/v1/items/find_all?unit_price=100.00"
 
     items = JSON.parse(response.body)
 
