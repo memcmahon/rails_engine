@@ -6,14 +6,14 @@ describe 'Invoice Relationship APIs' do
     @customer = create(:customer)
     @invoice = create(:invoice, customer: @customer, merchant: @merchant)
     @item = create(:item)
-    @transaction_1, @transaction_2, @transaction_3 = create_list(:transaction, 3, invoice = @invoice)
+    @transaction_1, @transaction_2, @transaction_3 = create_list(:transaction, 3, invoice: @invoice)
     @transaction_4 = create(:transaction)
-    @invoice_item_1, @invoice_item_2, @invoice_item_3 = create_list(:invoice_item, 3, invoice = @invoice, item = @item)
+    @invoice_item_1, @invoice_item_2, @invoice_item_3 = create_list(:invoice_item, 3, invoice: @invoice, item: @item)
     @invoice_item_4 = create(:invoice_item)
   end
 
   it "sends the transactions for an invoice" do
-    get '/api/v1/invoices/:id/transactions'
+    get "/api/v1/invoices/#{@invoice.id}/transactions"
 
     expect(response).to be_success
 
@@ -24,7 +24,7 @@ describe 'Invoice Relationship APIs' do
   end
 
   it "sends the invoice_items for an invoice" do
-    get '/api/v1/invoices/:id/invoice_items'
+    get "/api/v1/invoices/#{@invoice.id}/invoice_items"
 
     expect(response).to be_success
 
@@ -35,7 +35,7 @@ describe 'Invoice Relationship APIs' do
   end
 
   it "sends the items for an invoice" do
-    get '/api/v1/invoices/:id/items'
+    get "/api/v1/invoices/#{@invoice.id}/items"
 
     expect(response).to be_success
 
@@ -46,7 +46,7 @@ describe 'Invoice Relationship APIs' do
   end
 
   it "sends the customer for an invoice" do
-    get '/api/v1/invoices/:id/customer'
+    get "/api/v1/invoices/#{@invoice.id}/customer"
 
     expect(response).to be_success
 
@@ -56,7 +56,7 @@ describe 'Invoice Relationship APIs' do
   end
 
   it "sends the merchant for an invoice" do
-    get '/api/v1/invoices/:id/merchant'
+    get "/api/v1/invoices/#{@invoice.id}/merchant"
 
     expect(response).to be_success
 
