@@ -104,4 +104,27 @@ describe "Merchant Business Intelligence API" do
     revenue = JSON.parse(response.body)["revenue"]
     expect(revenue).to eq("3.0")
   end
+
+  it "returns top x merchants by items sold" do
+    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+    invoice_1 = create(:invoice, merchant: merchant_1)
+    invoice_2 = create(:invoice, merchant: merchant_2)
+    invoice_3 = create(:invoice, merchant: merchant_3)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2)
+    invoice_item_3 = create(:invoice_item, invoice: invoice_3)
+    transaction_1 = create(:transaction, invoice: invoice_1)
+    transaction_2 = create(:transaction, invoice: invoice_2, result: "failed")
+    transaction_3 = create(:transaction, invoice: invoice_3)
+
+    get "/api/v1/merchants/most_items?quantity=3"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+
+    expect(merchants.to_a.count).to eq(2)
+    expect(merchants.first["id"]).to eq(merchant_3.id)
+    expect(merchants.last["id"]).to eq(merchant_1.id)
+  end
 end
