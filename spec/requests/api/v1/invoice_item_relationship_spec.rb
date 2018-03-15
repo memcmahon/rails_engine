@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Invoice Items Relationship API' do
-  xit 'sends the invoice item invoice' do
+  it 'sends the invoice item invoice' do
     invoice = create(:invoice)
     invoice_item = create(:invoice_item, invoice: invoice)
 
