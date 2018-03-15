@@ -48,6 +48,11 @@ Rails.application.routes.draw do
       end
       get '/items', to: "items#index"
       get '/items/:id', to: "items#show"
+
+      namespace :invoice_items do
+        get '/:id/invoice', to: "invoice_item_invoice#show"
+        get '/:id/item', to: "invoice_item_item#show"
+      end
     end
   end
 end
