@@ -17,9 +17,9 @@ describe 'Items Business Logic APIs' do
   end
 
   it "sends top x items ranked by total revenue generated" do
-    item_1 = create(:item, name: "ThingBops", unit_price: 10000)
-    item_2 = create(:item, name: "ThingPops", unit_price: 20000)
-    item_3 = create(:item, name: "ThingRings", unit_price: 30000)
+    item_1 = create(:item, name: "Thing3", unit_price: 10000)
+    item_2 = create(:item, name: "Thing1", unit_price: 20000)
+    item_3 = create(:item, name: "Thing2", unit_price: 30000)
     invoice_1 = create(:invoice)
     invoice_2 = create(:invoice)
     invoice_3 = create(:invoice)
@@ -38,7 +38,7 @@ describe 'Items Business Logic APIs' do
 
     expect(response).to be_success
     expect(items.count).to eq(2)
-    expect(items.first["name"]).to eq("ThingPops")
-    expect(items.last["name"]).to eq("ThingRings")
+    expect(items.first["name"]).to eq("Thing1")
+    expect(items.last["name"]).to eq("Thing2")
   end
 end
