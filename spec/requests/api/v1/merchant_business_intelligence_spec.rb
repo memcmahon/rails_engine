@@ -117,10 +117,21 @@ describe "Merchant Business Intelligence API" do
   it "sends customers which have pending (unpaid) invoices" do
     merchant = create(:merchant)
     customer_1 = create(:customer)
-    get "/api/v1/merchants/#{merchant}/customers_with_pending_invoices"
+    customer_2 = create(:customer)
+    customer_3 = create(:customer)
+    invoice_1 = create(:invoice, merchant_id: merchant.id, customer_id: customer_1.id)
+    invoice_2 = create(:invoice, merchant_id: merchant.id, customer_id: customer_2.id)
+    invoice_3 = create(:invoice, merchant_id: merchant.id, customer_id: customer_3.id)
+    transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: "failed")
+    transaction_2 = create(:transaction, invoice_id: invoice_1.id, result: "success")
+    transaction_3 = create(:transaction, invoice_id: invoice_2.id, result: "failed")
+    transaction_4 = create(:transaction, invoice_id: invoice_3.id, result: "failed")
+    transaction_5 = create(:transaction, invoice_id: invoice_3.id, result: "failed")
+
+    get "/api/v1/merchants/#{merchant.id}/customers_with_pending_invoices"
 
     customers = JSON.parse(response.body)
 
-    expect(customers.count).to eq()
+    expect(customers.count).to eq(2)
   end
 end
