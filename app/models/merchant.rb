@@ -1,4 +1,5 @@
 class Merchant < ApplicationRecord
+  default_scope {order(:id)}
   validates_presence_of :name
 
   has_many :invoices

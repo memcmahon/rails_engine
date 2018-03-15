@@ -169,7 +169,7 @@ describe "Items API" do
 
   it "sends random invoice_item" do
     get "/api/v1/invoice_items/random.json"
-binding.pry
+
     expect(response).to be_success
   end
 end
