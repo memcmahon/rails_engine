@@ -166,4 +166,10 @@ describe "Items API" do
     expect(response).to be_success
     expect(invoice_items.count).to eq(2)
   end
+
+  it "sends random invoice_item" do
+    get "/api/v1/invoice_items/random.json"
+binding.pry
+    expect(response).to be_success
+  end
 end
