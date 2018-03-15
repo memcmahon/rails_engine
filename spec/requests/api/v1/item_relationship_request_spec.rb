@@ -10,7 +10,7 @@ describe 'Items Relationship API' do
 
     expect(response).to be_success
 
-    invoice_items = JSON.parse(response.body)["invoice_items"]
+    invoice_items = JSON.parse(response.body)
     expect(invoice_items).to be_instance_of(Array)
     expect(invoice_items.count).to eq(3)
   end
@@ -22,7 +22,7 @@ describe 'Items Relationship API' do
 
     expect(response).to be_success
 
-    merchant = JSON.parse(response.body)["merchant"]
+    merchant = JSON.parse(response.body)
     expect(merchant["id"]).to eq(item.merchant.id)
   end
 end
