@@ -45,7 +45,7 @@ RSpec.describe Merchant, type: :model do
     end
 
     it 'sends merchants ranked by items sold' do
-      merchant_1, merchant_2, merchant_3 = creat_list(:merchant, 3)
+      merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
       invoice_1 = create(:invoice, merchant: merchant_1)
       invoice_2 = create(:invoice, merchant: merchant_2)
       invoice_3 = create(:invoice, merchant: merchant_3)
@@ -56,9 +56,9 @@ RSpec.describe Merchant, type: :model do
       transaction_2 = create(:transaction, invoice: invoice_2, result: "failed")
       transaction_3 = create(:transaction, invoice: invoice_3)
 
-      expect(Merchant.rank_by_items.count).to eq(3)
-      expect(Merchant.rank_by_items.first.id).to eq(merchant_3.id)
-      expect(Merchant.rank_by_items.last.id).to eq(merchant_2.id) 
+      expect(Merchant.ranked_by_item(3).to_a.count).to eq(2)
+      expect(Merchant.ranked_by_item(3).first.id).to eq(merchant_3.id)
+      expect(Merchant.ranked_by_item(3).last.id).to eq(merchant_1.id)
     end
   end
 end
