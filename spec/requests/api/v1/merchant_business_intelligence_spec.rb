@@ -134,6 +134,7 @@ describe "Merchant Business Intelligence API" do
     expect(merchants.to_a.count).to eq(3)
     expect(merchants.first["id"]).to eq(@merchant_1.id)
     expect(merchants.last["id"]).to eq(@merchant_2.id)
+  end
 
   it "sends customers which have pending (unpaid) invoices" do
     merchant = create(:merchant)
