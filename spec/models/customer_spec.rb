@@ -20,7 +20,7 @@ RSpec.describe Customer, type: :model do
     invoice_5 = create(:invoice, customer: customer, merchant: merchant_1)
     transaction_1 = create(:transaction, invoice: invoice_1)
     transaction_2 = create(:transaction, invoice: invoice_2, result: 'failed')
-    transaction_3 = create(:transaction, invoice: invioce_2)
+    transaction_3 = create(:transaction, invoice: invoice_2)
     transaction_4 = create(:transaction, invoice: invoice_3, result: 'failed')
     transaction_6 = create(:transaction, invoice: invoice_4)
     transaction_7 = create(:transaction, invoice: invoice_5)
