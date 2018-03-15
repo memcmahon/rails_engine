@@ -106,10 +106,9 @@ describe "Merchant Business Intelligence API" do
   end
 
   it "returns top x merchants by items sold" do
-    merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
-    invoice_1 = create(:invoice, merchant: merchant_1)
-    invoice_2 = create(:invoice, merchant: merchant_2)
-    invoice_3 = create(:invoice, merchant: merchant_3)
+    invoice_1 = create(:invoice, merchant: @merchant_1)
+    invoice_2 = create(:invoice, merchant: @merchant_2)
+    invoice_3 = create(:invoice, merchant: @merchant_3)
     invoice_item_1 = create(:invoice_item, invoice: invoice_1)
     invoice_item_2 = create(:invoice_item, invoice: invoice_2)
     invoice_item_3 = create(:invoice_item, invoice: invoice_3)
@@ -123,8 +122,8 @@ describe "Merchant Business Intelligence API" do
 
     merchants = JSON.parse(response.body)
 
-    expect(merchants.to_a.count).to eq(2)
-    expect(merchants.first["id"]).to eq(merchant_3.id)
-    expect(merchants.last["id"]).to eq(merchant_1.id)
+    expect(merchants.to_a.count).to eq(3)
+    expect(merchants.first["id"]).to eq(@merchant_1.id)
+    expect(merchants.last["id"]).to eq(@merchant_2.id)
   end
 end
