@@ -15,7 +15,8 @@ class Invoice < ApplicationRecord
   end
 
   def self.revenue_by_date(date)
-    joins(:invoice_items, :transactions)
+    unscoped
+    .joins(:invoice_items, :transactions)
     .merge(Transaction.successful)
     .where(created_at: date.beginning_of_day..date.end_of_day)
     .sum("invoice_items.unit_price * invoice_items.quantity") / 100.0

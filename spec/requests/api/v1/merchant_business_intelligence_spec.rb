@@ -79,7 +79,7 @@ describe "Merchant Business Intelligence API" do
 
     revenue = JSON.parse(response.body)["revenue"]
 
-    expect(revenue).to eq("12.0")
+    expect(revenue).to eq("700.0")
   end
 
   it "sends total revenue for date x across all merchants" do

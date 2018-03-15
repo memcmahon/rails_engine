@@ -1,5 +1,4 @@
 class Customer < ApplicationRecord
-  default_scope {order(:id)}
   validates_presence_of :first_name, :last_name
   has_many :invoices
 
@@ -8,7 +7,8 @@ class Customer < ApplicationRecord
   end
 
   def self.favorite_customer(merchant_id)
-    select("customers.*, count(transactions.id) AS transactions_count")
+    unscoped
+    .select("customers.*, count(transactions.id) AS transactions_count")
     .joins(invoices: :transactions)
     .merge(Transaction.successful)
     .where("invoices.merchant_id = #{merchant_id}")
@@ -34,7 +34,7 @@ class Customer < ApplicationRecord
   end
 
   def favorite_merchant
-    invoices.includes(:merchant)
+    invoices.uncoped.includes(:merchant)
     .select("invoices.merchant_id, COUNT(invoices.id) AS total")
     .joins(:transactions)
     .where(transactions: {result: "success"})

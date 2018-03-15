@@ -23,7 +23,8 @@ class Item < ApplicationRecord
   end
 
   def self.most_revenue(quantity)
-    select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS item_revenue")
+    unscoped
+    .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS item_revenue")
     .joins(invoice_items: [invoice: :transactions])
     .merge(Transaction.successful)
     .group(:id)
@@ -32,7 +33,8 @@ class Item < ApplicationRecord
   end
 
   def self.ranked_by_sale(quantity)
-    select("items.*, sum(invoice_items.quantity) AS total")
+    unscoped
+    .select("items.*, sum(invoice_items.quantity) AS total")
     .joins(invoice_items: [invoice: :transactions])
     .where(transactions: {result: "success"})
     .group(:id)
