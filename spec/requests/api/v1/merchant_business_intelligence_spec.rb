@@ -114,6 +114,27 @@ describe "Merchant Business Intelligence API" do
     expect(revenue).to eq("3.0")
   end
 
+  it "returns top x merchants by items sold" do
+    invoice_1 = create(:invoice, merchant: @merchant_1)
+    invoice_2 = create(:invoice, merchant: @merchant_2)
+    invoice_3 = create(:invoice, merchant: @merchant_3)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2)
+    invoice_item_3 = create(:invoice_item, invoice: invoice_3)
+    transaction_1 = create(:transaction, invoice: invoice_1)
+    transaction_2 = create(:transaction, invoice: invoice_2, result: "failed")
+    transaction_3 = create(:transaction, invoice: invoice_3)
+
+    get "/api/v1/merchants/most_items?quantity=3"
+
+    expect(response).to be_success
+
+    merchants = JSON.parse(response.body)
+
+    expect(merchants.to_a.count).to eq(3)
+    expect(merchants.first["id"]).to eq(@merchant_1.id)
+    expect(merchants.last["id"]).to eq(@merchant_2.id)
+
   it "sends customers which have pending (unpaid) invoices" do
     merchant = create(:merchant)
     customer_1 = create(:customer)

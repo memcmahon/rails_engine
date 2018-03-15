@@ -28,4 +28,13 @@ class Merchant < ApplicationRecord
     .group(:merchant_id)[0]
     .revenue / 100.0).to_s
   end
+
+  def self.ranked_by_item(limit)
+    select("merchants.*, sum(invoice_items.quantity) AS total")
+    .joins(invoices: [:transactions, :invoice_items])
+    .where(transactions: {result: "success"})
+    .group(:id)
+    .order("total DESC")
+    .limit(limit)
+  end
 end

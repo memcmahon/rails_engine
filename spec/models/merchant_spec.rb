@@ -43,5 +43,22 @@ RSpec.describe Merchant, type: :model do
 
       expect(merchant.revenue({created_at: [Date.parse(created_date).beginning_of_day..Date.parse(created_date).end_of_day]})).to eq("12.0")
     end
+
+    it 'sends merchants ranked by items sold' do
+      merchant_1, merchant_2, merchant_3 = create_list(:merchant, 3)
+      invoice_1 = create(:invoice, merchant: merchant_1)
+      invoice_2 = create(:invoice, merchant: merchant_2)
+      invoice_3 = create(:invoice, merchant: merchant_3)
+      invoice_item_1 = create(:invoice_item, invoice: invoice_1)
+      invoice_item_2 = create(:invoice_item, invoice: invoice_2)
+      invoice_item_3 = create(:invoice_item, invoice: invoice_3)
+      transaction_1 = create(:transaction, invoice: invoice_1)
+      transaction_2 = create(:transaction, invoice: invoice_2, result: "failed")
+      transaction_3 = create(:transaction, invoice: invoice_3)
+
+      expect(Merchant.ranked_by_item(3).to_a.count).to eq(2)
+      expect(Merchant.ranked_by_item(3).first.id).to eq(merchant_3.id)
+      expect(Merchant.ranked_by_item(3).last.id).to eq(merchant_1.id)
+    end
   end
 end
