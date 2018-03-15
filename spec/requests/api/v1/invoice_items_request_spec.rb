@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "Items API" do
   before :each do
-    @invoice_item_1 = create(:invoice_item)
+    @invoice_item_1 = create(:invoice_item, unit_price: 1300)
     @invoice_item_2 = create(:invoice_item)
     @invoice_item_3 = create(:invoice_item)
   end
@@ -62,12 +62,12 @@ describe "Items API" do
   end
 
   it "sends one invoice_item with matching unit_price" do
-    get "/api/v1/invoice_items/find?unit_price=#{@invoice_item_1.unit_price}"
+    get "/api/v1/invoice_items/find?unit_price=13.00"
 
     invoice_item = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(invoice_item["unit_price"]).to eq(@invoice_item_1.unit_price)
+    expect(invoice_item["unit_price"]).to eq("13.0")
   end
 
   it "sends one invoice_item with mathcing created_at" do
@@ -135,12 +135,12 @@ describe "Items API" do
   end
 
   it "sends all invoice_items with matching unit_price" do
-    get "/api/v1/invoice_items/find_all?unit_price=#{@invoice_item_1.unit_price}"
+    get "/api/v1/invoice_items/find_all?unit_price=13.00"
 
     invoice_items = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(invoice_items.first["unit_price"]).to eq(@invoice_item_1.unit_price)
+    expect(invoice_items.first["unit_price"]).to eq("13.0")
   end
 
   it "sends all invoice_items with matching created_at" do
