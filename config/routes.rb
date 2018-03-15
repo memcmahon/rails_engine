@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         get '/:id/favorite_customer', to: "favorite_customer#show"
         get '/:id/revenue', to: "revenue#show"
         get '/most_items', to: "most_items#index"
+        get '/revenue', to: "revenue_by_date#show"
+        get '/:id/customers_with_pending_invoices', to: "pending_invoices#index"
       end
       get '/merchants', to: "merchants#index"
       get '/merchants/:id', to:"merchants#show"
@@ -51,6 +53,7 @@ Rails.application.routes.draw do
         get "/:id/invoice_items", to: "item_invoice_items#index"
         get "/:id/merchant", to: "item_merchant#show"
         get "/:id/best_day", to: "item_best_day#show"
+        get "/most_revenue", to: "most_revenue#index"
       end
       get '/items', to: "items#index"
       get '/items/:id', to: "items#show"
