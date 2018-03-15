@@ -70,7 +70,7 @@ describe "Items API" do
     expect(invoice_item["unit_price"]).to eq(@invoice_item_1.unit_price)
   end
 
-  it "sends one invoice_item with mathcing craeted_at" do
+  it "sends one invoice_item with mathcing created_at" do
     date = "2017-03-12 14:53:59 UTC"
     invoice_item_4 = create(:invoice_item, created_at: date)
     get "/api/v1/invoice_items/find?created_at=#{date}"
@@ -108,11 +108,62 @@ describe "Items API" do
   end
 
   it "sends all invoice_items with matching item_id" do
-    get "/api/v1/invoice_items/find_all?id=#{@invoice_item_1.id}"
+    get "/api/v1/invoice_items/find_all?item_id=#{@invoice_item_1.item_id}"
 
     invoice_items = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(invoice_items.first["id"]).to eq(@invoice_item_1.id)
+    expect(invoice_items.first["item_id"]).to eq(@invoice_item_1.item_id)
+  end
+
+  it "sends all invoice_items with matching invoice_id" do
+    get "/api/v1/invoice_items/find_all?invoice_id=#{@invoice_item_1.invoice_id}"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.first["invoice_id"]).to eq(@invoice_item_1.invoice_id)
+  end
+
+  it "sends all invoice_items with matching quantity" do
+    get "/api/v1/invoice_items/find_all?quantity=#{@invoice_item_1.quantity}"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.first["quantity"]).to eq(@invoice_item_1.quantity)
+  end
+
+  it "sends all invoice_items with matching unit_price" do
+    get "/api/v1/invoice_items/find_all?unit_price=#{@invoice_item_1.unit_price}"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.first["unit_price"]).to eq(@invoice_item_1.unit_price)
+  end
+
+  it "sends all invoice_items with matching created_at" do
+    date = "2017-03-12 14:53:59 UTC"
+    invoice_item_4 = create(:invoice_item, created_at: date)
+    invoice_item_5 = create(:invoice_item, created_at: date)
+    get "/api/v1/invoice_items/find_all?created_at=#{date}"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.count).to eq(2)
+  end
+
+  it "sends all invoice_items with matching updated_at" do
+    date = "2017-03-12 14:53:59 UTC"
+    invoice_item_6 = create(:invoice_item, updated_at: date)
+    invoice_item_7 = create(:invoice_item, updated_at: date)
+    get "/api/v1/invoice_items/find_all?updated_at=#{date}"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(invoice_items.count).to eq(2)
   end
 end
