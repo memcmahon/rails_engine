@@ -5,7 +5,6 @@ class InvoiceItem < ApplicationRecord
   belongs_to :invoice
 
   def self.random
-    order("RANDOM()")
-    .first
+    order("RANDOM()").first
   end
 end
