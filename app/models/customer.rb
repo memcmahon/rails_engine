@@ -4,7 +4,7 @@ class Customer < ApplicationRecord
   has_many :transactions, through: :invoices
 
   def self.random_record
-    all.sample(1)[0]
+    order("RANDOM()").first
   end
 
   def self.favorite_customer(merchant_id)

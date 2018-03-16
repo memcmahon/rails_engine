@@ -5,6 +5,6 @@ class Transaction < ApplicationRecord
   scope :successful, -> { where(result: 'success') }
 
   def self.random_record
-    all.sample(1)[0]
+    order("RANDOM()").first
   end
 end

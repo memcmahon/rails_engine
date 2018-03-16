@@ -8,7 +8,7 @@ class Merchant < ApplicationRecord
   scope :find_by_attribute, ->(attribute) { find_by(attribute) }
 
   def self.random_record
-    all.sample(1)[0]
+    order("RANDOM()").first
   end
 
   def self.rank_by_revenue(quantity)
@@ -22,13 +22,13 @@ class Merchant < ApplicationRecord
   end
 
   def revenue(date = {})
-    (invoices.select("sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    invoices.select("sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
     .joins(:invoice_items, :transactions)
     .unscope(:order)
     .where("transactions.result = 'success'")
     .where(date)
     .group(:merchant_id)[0]
-    .revenue / 100.0).to_s
+    .revenue
   end
 
   def self.ranked_by_item(limit)
