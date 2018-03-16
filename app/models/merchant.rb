@@ -22,9 +22,10 @@ class Merchant < ApplicationRecord
   end
 
   def revenue(date = {})
-    (invoices.unscoped.select("sum(invoice_items.unit_price * quantity) AS revenue")
+    (invoices.select("sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
     .joins(:invoice_items, :transactions)
-    .where(transactions: {result: "success"})
+    .unscope(:order)
+    .where("transactions.result = 'success'")
     .where(date)
     .group(:merchant_id)[0]
     .revenue / 100.0).to_s
@@ -34,7 +35,7 @@ class Merchant < ApplicationRecord
     unscoped
     .select("merchants.*, sum(invoice_items.quantity) AS total")
     .joins(invoices: [:transactions, :invoice_items])
-    .where(transactions: {result: "success"})
+    .merge(Transaction.successful)
     .group(:id)
     .order("total DESC")
     .limit(limit)
