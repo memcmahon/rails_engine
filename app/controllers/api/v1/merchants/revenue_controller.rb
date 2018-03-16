@@ -16,6 +16,6 @@ class Api::V1::Merchants::RevenueController < ApplicationController
   end
 
   def revenue_params
-    params.permit(:quantity, :date)
+    params.permit(:quantity, :date, :id)
   end
 end

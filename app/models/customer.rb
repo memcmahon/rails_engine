@@ -34,9 +34,10 @@ class Customer < ApplicationRecord
   end
 
   def favorite_merchant
-    invoices.unscoped.includes(:merchant)
+    invoices.includes(:merchant)
     .select("invoices.merchant_id, COUNT(invoices.id) AS total")
     .joins(:transactions)
+    .unscope(:order)
     .where(transactions: {result: "success"})
     .group(:merchant_id).order("total DESC")
     .first

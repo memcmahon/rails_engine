@@ -14,8 +14,9 @@ class Item < ApplicationRecord
   end
 
   def best_day
-    invoices.unscoped.select("invoices.*, SUM(invoice_items.quantity) AS total")
+    invoices.select("invoices.*, SUM(invoice_items.quantity) AS total")
             .joins(:invoice_items)
+            .unscope(:order)
             .group(:id)
             .order("total DESC")
             .first
