@@ -20,8 +20,8 @@ describe "Merchants Relationships API" do
     items = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(items["items"].count).to eq(3)
-    expect(items["items"].first["merchant_id"]).to eq(@merchant_1.id)
+    expect(items.count).to eq(3)
+    expect(items.first["merchant_id"]).to eq(@merchant_1.id)
   end
 
   it "sends a list of all invoices associated with a merchant" do
@@ -30,7 +30,7 @@ describe "Merchants Relationships API" do
     invoices = JSON.parse(response.body)
 
     expect(response).to be_success
-    expect(invoices["invoices"].count).to eq(3)
-    expect(invoices["invoices"].first["merchant_id"]).to eq(@merchant_1.id)
+    expect(invoices.count).to eq(3)
+    expect(invoices.first["merchant_id"]).to eq(@merchant_1.id)
   end
 end
